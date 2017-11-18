@@ -26,23 +26,16 @@ class BeautySpider(scrapy.Spider):
             nums = self.getPageNums(resp)
             yield self.getPicUrls(i, nums)
 
-
-            # print(urls)
-
     def getPicUrls(self, url, pageNums):
-
         url_fix = url.replace('.htm', '')
         u = []
-
         for i in range(1, int(pageNums) + 1):
             img_u = url_fix + '_' + str(i) + '.htm'
-            # print(img_u)
             request3 = urllib.request.Request(img_u)
             page_content = urllib.request.urlopen(request3)
             img_info = BeautifulSoup(page_content, 'lxml').find('div', class_='ImageBody').find('img')
             img_url = img_info.get('src')  # 获当前图片地址
             u.append(img_url)
-        print(u)
 
     def getPageNums(self, response):
         soup2 = BeautifulSoup(response, 'lxml').find('div', class_='NewPages').find('a')
