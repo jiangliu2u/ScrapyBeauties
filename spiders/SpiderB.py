@@ -11,12 +11,12 @@ from items import ScrapybeautiesItem
 
 class MySpider2(scrapy.Spider):
     name = 'NewSpider'
-    start_url = 'http://www.umei.cc/p/gaoqing/cn/'
+    start_url = ['http://www.umei.cc/p/gaoqing/cn/']
     f = open('D:/T.txt', 'w+')
 
     def start_requests(self):
-        #for i in range(2):
-        url = self.start_url + str(1) + '.htm'
+        # for i in range(2):
+        url = self.start_url[0] + str(1) + '.htm'
         yield Request(url, self.parse)  # 获取每页中套图地址，共22页
 
     def parse(self, response):
@@ -40,34 +40,8 @@ class MySpider2(scrapy.Spider):
             pic_url = page + '_' + str(i) + '.htm'
             yield Request(pic_url, self.getPics)
 
-
     def getPics(self, response):  # 获取每张图片的地址
         item = ScrapybeautiesItem()
         sr = response.xpath('//*[@id="ArticleId0"]/p/img/@src').extract()
-        item['src'] = sr[0]
-        #item['alt'] = '1'
-        #item['title'] = '2'
+        item['src'] = [sr[0]]  # !!!!!!注意此处url要保存为list中，方便imagepielines下载
         yield item
-
-        # def mkdir(self, path):  # 这个函数创建文件夹
-        #     isExists = os.path.exists(os.path.join("D:\mzitu", path))
-        #     if not isExists:
-        #         print(u'建了一个名字叫做', path, u'的文件夹！')
-        #         os.makedirs(os.path.join("D:\mzitu", path))
-        #         os.chdir(os.path.join("D:\mzitu", path))  ##切换到目录
-        #         return True
-        #     else:
-        #         print(u'名字叫做', path, u'的文件夹已经存在了！')
-        #         return False
-        #
-        # def save(self, img_url):  # 保存图片
-        #     name = img_url.replace('http://i1.umei.cc/uploads/tu/', '')
-        #     name2 = name.replace('/', '_')
-        #     print(img_url)
-        #     img = urllib.request.urlopen(img_url)
-        #     data = img.read()
-        #     print('hahha')
-        #     f = open(name2 + '.jpg', 'ab')
-        #     f.write(data)
-        #     print('xxxx')
-        #     f.close()

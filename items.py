@@ -10,6 +10,7 @@ import scrapy
 
 class ScrapybeautiesItem(scrapy.Item):
     # define the fields for your item here like:
-    #title = scrapy.Field()  # 套图标题
+    title = scrapy.Field()  # 套图标题
     src = scrapy.Field()  # 图片链接
-    #alt = scrapy.Field()  # 图片的名字
+    images = scrapy.Field()
+    image_paths = scrapy.Field()

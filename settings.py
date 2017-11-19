@@ -51,9 +51,9 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-   'ScrapyBeauties.middlewares.MyCustomDownloaderMiddleware': 543,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#    'ScrapyBeauties.middlewares.MyCustomDownloaderMiddleware': 543,
+# }
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -64,10 +64,12 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'ScrapyBeauties.pipelines.ScrapybeautiesPipeline': 300,
+    'ScrapyBeauties.pipelines.ScrapybeautiesPipeline': 300,
+    'ScrapyBeauties.pipelines.MyImagesPipeline': 1
 }
 
-IMAGES_STORE = 'D:/mzitu'
+IMAGES_STORE = 'D:\\mzitu'
+IMAGES_EXPIRES = 90
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 # AUTOTHROTTLE_ENABLED = True

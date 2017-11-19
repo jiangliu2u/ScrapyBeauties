@@ -4,37 +4,28 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import os
-import requests
-from settings import IMAGES_STORE
+
+
+import scrapy
+from scrapy.contrib.pipeline.images import ImagesPipeline
+from scrapy.exceptions import DropItem
 
 
 class ScrapybeautiesPipeline(object):
     def process_item(self, item, spider):
-        fold_name = "".join(item['title'])
-        header = {
-            'USER-Agent': 'User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
-            # 需要查看图片的cookie信息，否则下载的图片无法查看
-        }
-        images = []
-        # 所有图片放在一个文件夹下
-        dir_path = '{}'.format(IMAGES_STORE)
-        if not os.path.exists(dir_path) and len(item['src']) != 0:
-            os.mkdir(dir_path)
-        if len(item['src']) == 0:
-            with open('..//check.txt', 'a+') as fp:
-                fp.write("".join(item['title']) + ":" + "".join(item['url']))
-                fp.write("\n")
+        return item
 
-        for jpg_url, name, num in zip(item['src'], item['alt'], range(0, 100)):
-            file_name = name + str(num)
-            file_path = '{}//{}'.format(dir_path, file_name)
-            images.append(file_path)
-            if os.path.exists(file_path) or os.path.exists(file_name):
-                continue
 
-            with open('{}//{}.jpg'.format(dir_path, file_name), 'wb') as f:
-                req = requests.get(jpg_url, headers=header)
-                f.write(req.content)
+class MyImagesPipeline(ImagesPipeline):
+    def get_media_requests(self, item, info):
+        print(item)
+        for image_url in item['src']:
+            print(image_url)
+            yield scrapy.Request(image_url)
 
+    def item_completed(self, results, item, info):
+        image_paths = [x['path'] for ok, x in results if ok]
+        if not image_paths:
+            raise DropItem("Item contains no images")
+        item['image_paths'] = image_paths
         return item
