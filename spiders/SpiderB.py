@@ -40,6 +40,7 @@ class MySpider2(scrapy.Spider):
             pic_url = page + '_' + str(i) + '.htm'
             yield Request(pic_url, self.getPics)
 
+
     def getPics(self, response):  # 获取每张图片的地址
         item = ScrapybeautiesItem()
         sr = response.xpath('//*[@id="ArticleId0"]/p/img/@src').extract()
