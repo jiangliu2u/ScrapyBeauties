@@ -2,10 +2,6 @@ import scrapy
 from bs4 import BeautifulSoup
 from scrapy.http import Request
 import re
-from lxml import etree
-import os
-import urllib.request
-import urllib
 from items import ScrapybeautiesItem
 
 
@@ -15,9 +11,9 @@ class MySpider2(scrapy.Spider):
     f = open('D:/T.txt', 'w+')
 
     def start_requests(self):
-        # for i in range(2):
-        url = self.start_url[0] + str(1) + '.htm'
-        yield Request(url, self.parse)  # 获取每页中套图地址，共22页
+        for i in range(23):
+            url = self.start_url[0] + str(i) + '.htm'
+            yield Request(url, self.parse)  # 获取每页中套图地址，共22页
 
     def parse(self, response):
         soup = BeautifulSoup(response.text, 'lxml').find('div', class_='TypeList').find_all('a',
@@ -43,5 +39,7 @@ class MySpider2(scrapy.Spider):
     def getPics(self, response):  # 获取每张图片的地址
         item = ScrapybeautiesItem()
         sr = response.xpath('//*[@id="ArticleId0"]/p/img/@src').extract()
+        title = response.xpath("/html/head/title").extract()
         item['src'] = [sr[0]]  # !!!!!!注意此处url要保存为list中，方便imagepielines下载
+        item['title'] = [title[0].split('[')[1].replace("]", '').replace(' ', '')]  # 标题去除空格，防止存盘时写入出错
         yield item
