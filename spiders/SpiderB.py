@@ -11,7 +11,7 @@ class MySpider2(scrapy.Spider):
     f = open('D:/T.txt', 'w+')
 
     def start_requests(self):
-        for i in range(23):
+        for i in range(2):
             url = self.start_url[0] + str(i) + '.htm'
             yield Request(url, self.parse)  # 获取每页中套图地址，共22页
 
