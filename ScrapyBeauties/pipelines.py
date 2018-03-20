@@ -19,14 +19,14 @@ class MyImagesPipeline(ImagesPipeline):
         return filename
 
     def get_media_requests(self, item, info):
-        print(item)
+        print(item,'media_requestaa啊啊啊')
         for image_url in item['src']:
-            print(image_url)
-            yield scrapy.Request(image_url, meta={"item": item})
+            print(image_url,'image_url么么么么')
+            yield scrapy.Request(image_url)
 
     def item_completed(self, results, item, info):
         image_paths = [x['path'] for ok, x in results if ok]
-        print(image_paths)
+        print(image_paths,"image_paths哈哈哈哈")
         if not image_paths:
             raise DropItem("Item contains no images")
         item['image_paths'] = image_paths
