@@ -11,3 +11,4 @@ import scrapy
 class PicItem(scrapy.Item):
     image_urls=scrapy.Field()
     name = scrapy.Field()
+    url=scrapy.Field()

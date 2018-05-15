@@ -1,3 +1,4 @@
 #  scrapy抓取妹子图片
-运行spider目录下enterpoint.py即可运行程序。
-已知问题:目标网站结构有调整，出问题，基本程序结构没问题，有空再修改代码
+ScrapyBeauties不能下载图片了，网站加了防盗的Referer
+
+新的版本为example2运行example2/example2目录下run.py即下载图片。
