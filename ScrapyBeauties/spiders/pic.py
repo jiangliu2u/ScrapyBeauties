@@ -8,7 +8,7 @@ class pic_spider(scrapy.Spider):
     img_urls = []
     
     def parse(self,response):
-        all = response.xpath('/html/body/div[2]/div[3]/ul/li/a/@href').extract()
+        all = response.xpath('/html/body/div[2]/div[4]/ul/li/a/@href').extract()
         for i in all:
             yield Request(str(i),self.get_all)
     
